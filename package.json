@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "firebase": "^10.14.1"
+    "emoji-picker-react": "^4.12.0",
+    "firebase": "^10.14.1",
+    "react-toastify": "^10.0.6",
+    "timeago.js": "^4.0.2",
+    "vite": "^5.4.9",
+    "zustand": "^5.0.0"
   }
 }

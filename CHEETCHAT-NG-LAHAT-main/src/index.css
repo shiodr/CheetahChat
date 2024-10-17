@@ -7,7 +7,7 @@
 }
 
 body {
-  background-image: url("/bg.jpg");
+  background-image: url("CHEETCHAT-NG-LAHAT-main/public/bg.jpg");
   display: flex;
   align-items: center;
   justify-content: center;

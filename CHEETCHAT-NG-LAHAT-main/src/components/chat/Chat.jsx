@@ -115,16 +115,16 @@ const Chat = () => {
     <div className="chat">
       <div className="top">
         <div className="user">
-          <img src={user?.avatar || "./avatar.png"} alt="" />
+          <img src={user?.avatar || "CHEETCHAT-NG-LAHAT-main/public/avatar.png"} alt="" />
           <div className="texts">
             <span>{user?.username}</span>
             <p>Lorem ipsum dolor, sit amet.</p>
           </div>
         </div>
         <div className="icons">
-          <img src="./phone.png" alt="" />
-          <img src="./video.png" alt="" />
-          <img src="./info.png" alt="" />
+          <img src="CHEETCHAT-NG-LAHAT-main/public/phone.png" alt="" />
+          <img src="CHEETCHAT-NG-LAHAT-main/public/video.png" alt="" />
+          <img src="CHEETCHAT-NG-LAHAT-main/public/info.png" alt="" />
         </div>
       </div>
       <div className="center">
@@ -154,7 +154,7 @@ const Chat = () => {
       <div className="bottom">
         <div className="icons">
           <label htmlFor="file">
-            <img src="./img.png" alt="" />
+            <img src="CHEETCHAT-NG-LAHAT-main/public/img.png" alt="" />
           </label>
           <input
             type="file"
@@ -162,8 +162,8 @@ const Chat = () => {
             style={{ display: "none" }}
             onChange={handleImg}
           />
-          <img src="./camera.png" alt="" />
-          <img src="./mic.png" alt="" />
+          <img src="CHEETCHAT-NG-LAHAT-main/public/camera.png" alt="" />
+          <img src="CHEETCHAT-NG-LAHAT-main/public/mic.png" alt="" />
         </div>
         <input
           type="text"
@@ -178,7 +178,7 @@ const Chat = () => {
         />
         <div className="emoji">
           <img
-            src="./emoji.png"
+            src="CHEETCHAT-NG-LAHAT-main/public/emoji.png"
             alt=""
             onClick={() => setOpen((prev) => !prev)}
           />
