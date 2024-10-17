@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "../../lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore"; // Added necessary Firestore imports
 import upload from "../../lib/upload";
 
 const Login = () => {
@@ -30,27 +30,40 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.target);
-
     const { username, email, password } = Object.fromEntries(formData);
 
-    // VALIDATE INPUTS
-    if (!username || !email || !password)
-      return toast.warn("Please enter inputs!");
-    if (!avatar.file) return toast.warn("Please upload an avatar!");
-
-    // VALIDATE UNIQUE USERNAME
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("username", "==", username));
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      return toast.warn("Select another username");
+    // Validate inputs
+    if (!username || !email || !password) {
+      toast.warn("Please enter all inputs!");
+      setLoading(false); // Ensure loading is reset
+      return;
     }
 
+    if (!avatar.file) {
+      toast.warn("Please upload an avatar!");
+      setLoading(false); // Ensure loading is reset
+      return;
+    }
+
+    // Validate unique username
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("username", "==", username));
+    
     try {
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        toast.warn("Select another username");
+        setLoading(false); // Ensure loading is reset
+        return;
+      }
+
+      // Create new user with Firebase Auth
       const res = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("User created:", res.user);  // Ensure the user is created
 
+      // Upload avatar and create Firestore document
       const imgUrl = await upload(avatar.file);
-
+      
       await setDoc(doc(db, "users", res.user.uid), {
         username,
         email,
@@ -59,13 +72,11 @@ const Login = () => {
         blocked: [],
       });
 
-      await setDoc(doc(db, "userchats", res.user.uid), {
-        chats: [],
-      });
+      await setDoc(doc(db, "userchats", res.user.uid), { chats: [] });
 
       toast.success("Account created! You can login now!");
     } catch (err) {
-      console.log(err);
+      console.log("Error during registration:", err);
       toast.error(err.message);
     } finally {
       setLoading(false);
@@ -82,7 +93,7 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      console.log(err);
+      console.log("Error during login:", err);
       toast.error(err.message);
     } finally {
       setLoading(false);
@@ -104,7 +115,7 @@ const Login = () => {
         <h2>Create an Account</h2>
         <form onSubmit={handleRegister}>
           <label htmlFor="file">
-            <img src={avatar.url || "./avatar.png"} alt="" />
+            <img src={avatar.url || "./avatar.png"} alt="Avatar" />
             Upload an image
           </label>
           <input
